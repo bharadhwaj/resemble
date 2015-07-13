@@ -99,7 +99,7 @@ function load_image1()
   }
 
 
-  img1 = blob;
+  img1 = blobToFile(blob, "img1");
   img.onload = function()
   {
     if(img2)
@@ -131,18 +131,25 @@ function load_image2()
 
 
 
-  img2 = blob;
+  img2 = blobToFile(blob, "img2");
   img.onload = function()
   {
-    if(img1){
-      diffImage = resemble(img2).compareTo(img1).onComplete(function(data)
+    // if(img1){
+      diff_image.src = resemble(img2).compareTo(img1).onComplete(function(data)
       {
-         diff_image.src = data.getImageDataUrl();
+         return data.getImageDataUrl();
       } )
       $("#picture").append(diff_image);
-    }
+    // }
   }
 }
 
+
+function blobToFile(blob, fileName){
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    blob.lastModifiedDate = new Date();
+    blob.name = fileName;
+    return blob;
+}
 </script>
 
