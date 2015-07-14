@@ -35,15 +35,16 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="col-md-5">
-              <!-- <form id="form"  role="form" method=""> -->
+              <form id="form"  role="form" method="post">
                 <div class="picture col-md-10 col-md-offset-1" id="picture1"></div>
                 
                 <!-- <div class="form-group"> -->
                   <!-- <label for="photo">Image 1</label> -->
-                  <input type="url" class="form-control" onChange='load_image1();'name="image1" id="image1" placeholder="URL for 2nd image" autofocus>
+                  <input type="url" class="form-control" onChange='load_image1();'name="image1" id="image1" placeholder="URL for 1st image" autofocus>
+                  <button type="submit">Compare</button>
                 <!-- </div> -->
     
-              <!-- </form> -->
+              
             </div>
 
             <div class="col-md-5 pull-right">
@@ -56,6 +57,7 @@
                 <!-- </div> -->
     
               <!-- </form> -->
+              </form>
             </div>
 
             <div class="picture col-md-10 col-md-offset-1" id="picture"></div>
@@ -82,32 +84,27 @@
 var img1;
 var img2;
 var diff_image = new Image();
+var diffImage;
 function load_image1()
 { 
-    var img = new Image();  
+  var img = new Image();  
   img.src = document.getElementById('image1').value
   img.style.width='100%';
   $("#picture1").append(img);
-
-  var blob = null;
-  var xhr = new XMLHttpRequest(); 
-  xhr.open("GET", img.src); 
-  xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
-  xhr.onload = function() 
-  {
-      blob = xhr.response;//xhr.response is now a blob object
-  }
-
-
-  img1 = blobToFile(blob, "img1");
+  
+  img1 = img.src;
   img.onload = function()
   {
     if(img2)
     {
-      data = resemble(img1).compareTo(img2).ignoreColors().onComplete(function(data)
+      diffImage = resemble(img1).compareTo(img2).ignoreColors().onComplete(function(data)
       {
          diff_image.src = data.getImageDataUrl();
-      } )
+         console.log(data);
+         return data;
+
+      } );
+      console.log(diffImage);
       $("#picture").append(diff_image);
     }
   }
@@ -120,36 +117,22 @@ function load_image2()
   img.style.width='100%';
   $("#picture2").append(img);
 
-  var blob = null;
-  var xhr = new XMLHttpRequest(); 
-  xhr.open("GET", img.src); 
-  xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
-  xhr.onload = function() 
-  {
-      blob = xhr.response;//xhr.response is now a blob object
-  }
-
-
-
-  img2 = blobToFile(blob, "img2");
+  img2 = img.src;
   img.onload = function()
   {
-    // if(img1){
-      diff_image.src = resemble(img2).compareTo(img1).onComplete(function(data)
+    if(img1){
+      diffImage = resemble(img2).compareTo(img1).ignoreColors().onComplete(function(data)
       {
-         return data.getImageDataUrl();
-      } )
+         diff_image.src = data.getImageDataUrl();
+         console.log(data);
+         return data;
+         
+      } );
+      console.log(diffImage);
       $("#picture").append(diff_image);
     // }
   }
 }
 
-
-function blobToFile(blob, fileName){
-    //A Blob() is almost a File() - it's just missing the two properties below which we will add
-    blob.lastModifiedDate = new Date();
-    blob.name = fileName;
-    return blob;
-}
 </script>
 
