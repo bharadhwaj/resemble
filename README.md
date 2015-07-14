@@ -25,7 +25,7 @@ Uses [resemble.js]
 Implemented as a python-flask web app.
 ###Usage:
 
-``` python app.py ``` starts the server at port 8000 in localhost.
+``` python app.py ``` starts the server at port 8080 in localhost.
 Head over to http://localhost:8080 to see it in action.
 
 ###Dependencies:
