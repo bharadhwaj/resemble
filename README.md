@@ -15,6 +15,7 @@ First solution uses opencv and python. Comparison is based on histograms.
 - python-opencv
 
 Python packages:
+
 - matplotlib
 - requests
 
@@ -28,7 +29,9 @@ Implemented as a python-flask web app.
 Head over to http://localhost:8080 to see it in action.
 
 ###Dependencies:
+
 Python packages:
+
 - Flask
 - requests
 
